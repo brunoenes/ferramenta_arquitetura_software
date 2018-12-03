@@ -21,7 +21,6 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.part.ViewPart;
 
 import br.com.artigo.handlers.SampleHandler;
-import br.com.artigo.model.Coupling;
 import br.com.artigo.model.InfoClasse;
 
 public class SampleView extends ViewPart {
@@ -153,7 +152,17 @@ public class SampleView extends ViewPart {
 				msg += "Pacote Destino: " + classe.getPacoteAlterado().getNomePacote() + " - "
 						+ df.format(classe.getSimNovoPacote() * 100) + "% - " + classe.getPacoteAlterado().getClassePadrao().getNomeClasse() + "\n";
 
-				msg += "\nAfferent Coupling: \n {\n";
+				
+				msg += "\nAfferent Coupling: \n";
+				msg += "-Pacote Atual: " + classe.getAfferentAtual().getPorcentagem() + "%, \n";
+				msg += "-Pacote Destino: " + classe.getAfferentAtualizado().getPorcentagem() + "% \n";
+				
+				msg += "\nEfferent Coupling: \n ";
+				msg += "-Pacote Atual: " + classe.getEfferentAtual().getPorcentagem() + "%, \n";
+				msg += "-Pacote Destino: " + classe.getEfferentAtualizado().getPorcentagem() + "% ";
+				
+				
+			/*	msg += "\nAfferent Coupling: \n {\n";
 
 				for (Coupling coupling : classe.getAfferentCoupling()) {
 					msg += "   " + coupling.getNomePacote() + " - " + coupling.getPorcentagem() + "%,\n";
@@ -164,7 +173,7 @@ public class SampleView extends ViewPart {
 				for (Coupling coupling : classe.getEfferentCoupling()) {
 					msg += "   " + coupling.getNomePacote() + " - " + coupling.getPorcentagem() + ",\n";
 				}
-				msg += "}";
+				msg += "}"; */
 
 				MessageDialog.openInformation(HandlerUtil.getActiveShell(SampleHandler.event), "Informações da Classe",
 						msg);

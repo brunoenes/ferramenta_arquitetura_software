@@ -105,6 +105,8 @@ public class SampleHandler extends AbstractHandler {
 				// TODO calcula Efferent Coupling
 				this.efferentCoupling();
 
+				this.coupling();
+
 				this.openView();
 
 			}
@@ -115,6 +117,85 @@ public class SampleHandler extends AbstractHandler {
 		MessageDialog.openInformation(window.getShell(), "Obrigado!",
 				"Obrigado por utilizar a ferramente de similaridade");
 		return null;
+	}
+
+	private void coupling() {
+
+		for (InfoPacote infoPacote : pacotes) {
+
+			for (InfoClasse infoclasse : infoPacote.getClassesPacote()) {
+
+				if (infoclasse.getPacoteAlterado() != null) {
+					// calcula afferent em relação ao pacote atual
+					infoclasse.setAfferentAtual(afferent(infoclasse, infoclasse.getPacoteAtual(), true));
+					// calcula afferent em relacao ao novo pacote
+					infoclasse.setAfferentAtualizado(afferent(infoclasse, infoclasse.getPacoteAlterado(), false));
+					// calcula efferent em relação ao pacote atual
+					infoclasse.setEfferentAtual(efferent(infoclasse, infoclasse.getPacoteAtual(), true));
+					// calcula efferent em relacao ao novo pacote
+					infoclasse.setEfferentAtualizado(efferent(infoclasse, infoclasse.getPacoteAlterado(), false));
+
+				}
+
+			}
+		}
+	}
+
+	private Coupling afferent(InfoClasse infoClasse, InfoPacote infoPacote, boolean isAtual) {
+
+		Coupling coupling = new Coupling();
+		coupling.setNomePacote(infoPacote.getNomePacote());
+
+		if (!isAtual) {
+			coupling.setQtdClassePacote(infoPacote.getClassesPacote().size() + 1);
+		} else {
+			coupling.setQtdClassePacote(infoPacote.getClassesPacote().size());
+		}
+
+		ArrayList<String> classes = new ArrayList<>();
+
+		for (InfoClasse cl : infoPacote.getClassesPacote()) {
+
+			if (!cl.equals(infoClasse)) {
+				for (String tipo : cl.getTipos()) {
+					tipo += ".java";
+					if (tipo.equals(infoClasse.getNomeClasse())) {
+						if (!this.verificaExistencia(cl.getNomeClasse(), classes)) {
+							classes.add(cl.getNomeClasse());
+						}
+					}
+				}
+			}
+		}
+		coupling.setValor(classes.size());
+		return coupling;
+	}
+
+	private Coupling efferent(InfoClasse infoClasse, InfoPacote infoPacote, boolean isAtual) {
+
+		Coupling coupling = new Coupling();
+		coupling.setNomePacote(infoPacote.getNomePacote());
+
+		if (!isAtual) {
+			coupling.setQtdClassePacote(infoPacote.getClassesPacote().size() + 1);
+		} else {
+			coupling.setQtdClassePacote(infoPacote.getClassesPacote().size());
+		}
+
+		ArrayList<String> classes = new ArrayList<>();
+
+
+		for (String tipo : infoClasse.getTipos()) {
+			if (this.isClasse(tipo, infoPacote, infoClasse)) {
+				if (!this.verificaExistencia(tipo, classes)) {
+					classes.add(tipo);
+				}
+			}
+		}
+		
+		coupling.setValor(classes.size());
+
+		return coupling;
 	}
 
 	private void afferentCoupling() {

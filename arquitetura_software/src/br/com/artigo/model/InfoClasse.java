@@ -23,6 +23,14 @@ public class InfoClasse {
 	private ArrayList<Coupling> afferentCoupling;
 	
 	private ArrayList<Coupling> efferentCoupling;
+	
+	private Coupling afferentAtual;
+	
+	private Coupling afferentAtualizado;
+	
+	private Coupling efferentAtual;
+	
+	private Coupling efferentAtualizado;
 
 	public InfoClasse() {
 		this.tipos = new ArrayList<>();
@@ -109,6 +117,38 @@ public class InfoClasse {
 
 	public void setEfferentCoupling(ArrayList<Coupling> efferentCoupling) {
 		this.efferentCoupling = efferentCoupling;
+	}
+
+	public Coupling getAfferentAtual() {
+		return afferentAtual;
+	}
+
+	public void setAfferentAtual(Coupling afferentAtual) {
+		this.afferentAtual = afferentAtual;
+	}
+
+	public Coupling getAfferentAtualizado() {
+		return afferentAtualizado;
+	}
+
+	public void setAfferentAtualizado(Coupling afferentAtualizado) {
+		this.afferentAtualizado = afferentAtualizado;
+	}
+
+	public Coupling getEfferentAtual() {
+		return efferentAtual;
+	}
+
+	public void setEfferentAtual(Coupling efferentAtual) {
+		this.efferentAtual = efferentAtual;
+	}
+
+	public Coupling getEfferentAtualizado() {
+		return efferentAtualizado;
+	}
+
+	public void setEfferentAtualizado(Coupling efferentAtualizado) {
+		this.efferentAtualizado = efferentAtualizado;
 	}
 
 }
