@@ -127,14 +127,13 @@ public class SampleHandler extends AbstractHandler {
 
 				if (infoclasse.getPacoteAlterado() != null) {
 					// calcula afferent em relação ao pacote atual
-					infoclasse.setAfferentAtual(afferent(infoclasse, infoclasse.getPacoteAtual(), true));
+					infoclasse.setAfferentAtualCl(afferent(infoclasse, infoclasse.getPacoteAtual(), true));
 					// calcula afferent em relacao ao novo pacote
-					infoclasse.setAfferentAtualizado(afferent(infoclasse, infoclasse.getPacoteAlterado(), false));
+					infoclasse.setAfferentAtualizadoCl(afferent(infoclasse, infoclasse.getPacoteAlterado(), false));
 					// calcula efferent em relação ao pacote atual
-					infoclasse.setEfferentAtual(efferent(infoclasse, infoclasse.getPacoteAtual(), true));
+					infoclasse.setEfferentAtualCl(efferent(infoclasse, infoclasse.getPacoteAtual(), true));
 					// calcula efferent em relacao ao novo pacote
-					infoclasse.setEfferentAtualizado(efferent(infoclasse, infoclasse.getPacoteAlterado(), false));
-
+					infoclasse.setEfferentAtualizadoCl(efferent(infoclasse, infoclasse.getPacoteAlterado(), false));
 				}
 
 			}

@@ -3,38 +3,46 @@ package br.com.artigo.model;
 import java.util.ArrayList;
 
 public class InfoClasse {
-	
+
 	private String nomeClasse;
-	
+
 	private InfoPacote pacoteAtual;
-	
+
 	private InfoPacote pacoteAlterado;
-	
+
 	private ArrayList<String> tipos;
-	
+
 	private ArrayList<Float> similaridades;
-	
+
 	private float similaridadeClasse;
-	
+
 	private float simNovoPacote;
-	
+
 	private float mSimilPacoteAtual;
-	
+
 	private ArrayList<Coupling> afferentCoupling;
-	
+
 	private ArrayList<Coupling> efferentCoupling;
-	
+
+	private Coupling afferentAtualCl;
+
+	private Coupling afferentAtualizadoCl;
+
+	private Coupling efferentAtualCl;
+
+	private Coupling efferentAtualizadoCl;
+
 	private Coupling afferentAtual;
-	
+
 	private Coupling afferentAtualizado;
-	
+
 	private Coupling efferentAtual;
-	
+
 	private Coupling efferentAtualizado;
 
 	public InfoClasse() {
 		this.tipos = new ArrayList<>();
-		this.similaridades = new ArrayList<>();	
+		this.similaridades = new ArrayList<>();
 		this.afferentCoupling = new ArrayList<>();
 		this.efferentCoupling = new ArrayList<>();
 	}
@@ -119,6 +127,38 @@ public class InfoClasse {
 		this.efferentCoupling = efferentCoupling;
 	}
 
+	public Coupling getAfferentAtualCl() {
+		return afferentAtualCl;
+	}
+
+	public void setAfferentAtualCl(Coupling afferentAtualCl) {
+		this.afferentAtualCl = afferentAtualCl;
+	}
+
+	public Coupling getAfferentAtualizadoCl() {
+		return afferentAtualizadoCl;
+	}
+
+	public void setAfferentAtualizadoCl(Coupling afferentAtualizadoCl) {
+		this.afferentAtualizadoCl = afferentAtualizadoCl;
+	}
+
+	public Coupling getEfferentAtualCl() {
+		return efferentAtualCl;
+	}
+
+	public void setEfferentAtualCl(Coupling efferentAtualCl) {
+		this.efferentAtualCl = efferentAtualCl;
+	}
+
+	public Coupling getEfferentAtualizadoCl() {
+		return efferentAtualizadoCl;
+	}
+
+	public void setEfferentAtualizadoCl(Coupling efferentAtualizadoCl) {
+		this.efferentAtualizadoCl = efferentAtualizadoCl;
+	}
+
 	public Coupling getAfferentAtual() {
 		return afferentAtual;
 	}
@@ -150,5 +190,7 @@ public class InfoClasse {
 	public void setEfferentAtualizado(Coupling efferentAtualizado) {
 		this.efferentAtualizado = efferentAtualizado;
 	}
+
+	
 
 }
