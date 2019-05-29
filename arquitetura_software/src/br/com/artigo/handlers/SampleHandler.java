@@ -52,7 +52,6 @@ public class SampleHandler extends AbstractHandler {
 		SampleHandler.event = event;
 
 		window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
-		this.classeAutomatica = false;
 		pacotes = new ArrayList<InfoPacote>();
 		altPacotes = new ArrayList<InfoPacote>();
 		SampleHandler.classe = new ArrayList<>();
@@ -61,55 +60,36 @@ public class SampleHandler extends AbstractHandler {
 
 		// TODO Pega o projeto selecionado no workspace
 		IProject iProject = getProjectFromWorkspace(event);
+		
+		if(iProject == null)
+			return null;
 
 		try {
 
 			// TODO recupera informacoes de pacotes e classe
 			this.recuperaInformacoes(iProject);
 
-			boolean respostaCorreta = false;
+			// TODO calcula a similaridade dos pacotes atuais add a media
+			this.calcSimPacoteAtual();
 
-			String resposta = "";
+			// TODO adiciona as classes Padroes nos pacotes
+			this.adicionaClassePadrao();
 
-			while (!respostaCorreta) {
+			// TODO calcula a similaridade de classe com as classes padroes do pacote
+			this.calcSimClassePadrao();
 
-				resposta = JOptionPane.showInputDialog("Digite: \n1 - Passar a classe padão como parêmetro; "
-						+ "\n2 - Gerar todas pela média de similaridade; \n3 - Sair da ferramenta;");
+			// TODO calcula novas similaridades
+			this.calcSimClasses();
 
-				if (resposta.equals("1") || resposta.equals("2") || resposta.equals("3"))
-					respostaCorreta = true;
+			// TODO calcula Afferent Coupling
+			this.afferentCoupling();
 
-			}
+			// TODO calcula Efferent Coupling
+			this.efferentCoupling();
 
-			if (!resposta.equals("3")) {
+			this.coupling();
 
-				if (resposta.equals("2")) {
-					this.classeAutomatica = true;
-				}
-
-				// TODO calcula a similaridade dos pacotes atuais add a media
-				this.calcSimPacoteAtual();
-
-				// TODO adiciona as classes Padroes nos pacotes
-				this.adicionaClassePadrao();
-
-				// TODO calcula a similaridade de classe com as classes padroes do pacote
-				this.calcSimClassePadrao();
-
-				// TODO calcula novas similaridades
-				this.calcSimClasses();
-
-				// TODO calcula Afferent Coupling
-				this.afferentCoupling();
-
-				// TODO calcula Efferent Coupling
-				this.efferentCoupling();
-
-				this.coupling();
-
-				this.openView();
-
-			}
+			this.openView();
 
 		} catch (CoreException e) {
 			e.printStackTrace();
@@ -183,7 +163,6 @@ public class SampleHandler extends AbstractHandler {
 
 		ArrayList<String> classes = new ArrayList<>();
 
-
 		for (String tipo : infoClasse.getTipos()) {
 			if (this.isClasse(tipo, infoPacote, infoClasse)) {
 				if (!this.verificaExistencia(tipo, classes)) {
@@ -191,7 +170,7 @@ public class SampleHandler extends AbstractHandler {
 				}
 			}
 		}
-		
+
 		coupling.setValor(classes.size());
 
 		return coupling;
@@ -367,40 +346,7 @@ public class SampleHandler extends AbstractHandler {
 		// verifica qual a maior similaridade e add a classe Padrao ao pacote
 		for (InfoPacote infoPacote : pacotes) {
 			if (infoPacote.getClassesPacote().size() > 0) {
-
-				if (this.classeAutomatica) {
-					this.geraClassePadrao(infoPacote);
-				} else {
-
-					boolean retornaClasse = false;
-
-					while (!retornaClasse) {
-
-						String classePadrao = JOptionPane.showInputDialog("Digite a classe padrão do pacote "
-								+ infoPacote.getNomePacote() + " " + "ou -1 para gerar automaticamente.");
-
-						if (classePadrao.equals("-1")) {
-							this.geraClassePadrao(infoPacote);
-							retornaClasse = true;
-						} else {
-
-							classePadrao = classePadrao.toUpperCase();
-							if (!classePadrao.contains(".JAVA")) {
-								classePadrao += ".JAVA";
-							}
-
-							InfoClasse aux = this.retornaClasseByNome(classePadrao, infoPacote);
-
-							if (aux != null) {
-								infoPacote.setClassePadrao(aux);
-								retornaClasse = true;
-							} else {
-								MessageDialog.openInformation(window.getShell(), "Erro!", "Classe não encontrado no "
-										+ "pacote " + infoPacote.getNomePacote() + " - Tente novamente!");
-							}
-						}
-					}
-				}
+				this.geraClassePadrao(infoPacote);
 			}
 		}
 	}
@@ -542,8 +488,13 @@ public class SampleHandler extends AbstractHandler {
 			jp = (JavaProject) selection.getFirstElement();
 			return jp.getProject();
 		} catch (ClassCastException e) {
+			try {
 			p = (Project) selection.getFirstElement();
 			return p.getProject();
+			} catch (Exception e1) {
+				MessageDialog.openInformation(HandlerUtil.getActiveShell(event), "Atenção!", "Selecione a raiz do projeto");
+				return null;
+			}
 		}
 	}
 
